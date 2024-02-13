@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= message %></h1>
+    <% if (errors && errors.length > 0) { %>
+    <div style="color: red">
+      <% errors.forEach(function(error) { %>
+      <p><%= error.msg %></p>
+      <% }); %>
+    </div>
+    <% } %>
+    <form action="/register/new_register" method="post">
+      <table>
+          <tr>
+              <td>שם משתמש:</td>
+              <td>
+                  <input type="text" id="username" name="username" value="<%= formData ? formData.username : '' %>" required/>
+              </td>
+          </tr>
+          <tr>
+              <td>מייל:</td>
+              <td>
+                  <input type="email" id="email" name="email" value="<%= formData ? formData.email : '' %>" required/>
+              </td>
+          </tr>
+          <tr>
+            <td>סיסמה:</td>
+            <td>
+              <input type="password" id="password" name="password" value="<%= formData ? formData.password : '' %>" required/>
+            </td>
+          </tr>
+          <tr>
+            <td>אימות סיסמה:</td>
+            <td>
+              <input type="password" id="confirm_password" name="confirm_password" value="<%= formData ? formData.confirm_password : '' %>" required/>
+            </td>
+          </tr>      
+          <tr>
+              <td colspan="2">
+                  <button type="submit">שלח</button>
+              </td>
+          </tr>
+      </table>
+  </form>
+  <p>Already have an account? <a href="/login">Log in</a></p>
+  </body>
+</html>

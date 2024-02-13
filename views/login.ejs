@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login</title>
+  </head>
+  <body>
+    <h1><%= message %></h1>
+    <form action="/login" method="POST">
+      <div>
+        <label for="username">Username or email:</label>
+        <br />
+        <input type="text" id="usernameOrEmail" name="usernameOrEmail" required />
+      </div>
+      <br />
+      <div>
+        <label for="password">Password:</label>
+        <br />
+        <input type="password" id="password" name="password" required />
+      </div>
+      <br />
+      <label>
+        <input type="checkbox" name="rememberMe" value="true" /> Remember Me
+      </label>
+      <br />
+      <br />
+      <button type="submit">Login</button>
+      <br />
+    </form>
+    <p><a href="/password-reset-request">Forgot Password?</a></p>
+    <p>Don't have an account? <a href="/register">Sign up</a></p>
+  </body>
+</html>
