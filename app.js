@@ -7,7 +7,7 @@ const logout = require("./routes/logout");
 const resetPassword = require("./routes/reset-password");
 const passwordResetRequest = require("./routes/password-reset-request");
 const { validatePassword } = require("./utils/validatePassword");
-const setupMiddleware = require("./middleware"); 
+const setupMiddleware = require("./middlewares"); 
 
 // Create an express app
 const app = express();

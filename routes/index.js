@@ -1,10 +1,19 @@
-exports.index = function (req, res) {
-  const isLoggedIn = req.session.userId ? true : false;
-  console.log("req.session.userId in the index page:", req.session.userId);
+const { verifyToken } = require("../utils/verifyToken");
+
+exports.index = async function (req, res) {
+  const verificationResult = await verifyToken({
+    token: req.cookies.session_id, // Assuming the session ID is stored in a cookie named 'session_id'
+    tableName: 'sessions',
+    tokenColumnName: 'session_id',
+    expirationColumnName: 'expiry',
+    noTokenMessage: "",
+    invalidTokenMessage: ""
+  });
+  // console.log("req.sessionID in the index page:", req.sessionID, "isLoggedIn:", isLoggedIn);
   res.render("index", {
     title: "Home Page",
     message: "Welcome to my website!",
-    isLoggedIn: isLoggedIn,
+    isLoggedIn: verificationResult.isValid,
   });
 };
 

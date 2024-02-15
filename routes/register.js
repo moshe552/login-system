@@ -86,7 +86,6 @@ exports.newRegister = [
       // SQL query with placeholders
       const query =
         "INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, NOW())";
-      // Using prepared statements to ensure safe queries
       await db.queryAsync(query, [username, email, encryptedPassword]);
       // If there is no error, the user is redirected to the register page
       // res.status(200).json({ message: "Registration successful" });

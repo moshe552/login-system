@@ -4,24 +4,29 @@ const { encryptsPassword } = require("../utils/encryptsPassword");
 const { verifyToken } = require("../utils/verifyToken");
 
 exports.load = async function (req, res) {
-  const token = req.query.token;
-  const verificationResult = await verifyToken(token);
-  if (verificationResult.isValid) {
-  res.status(200).render("reset-password", {
-    title: "Reset Password Page",
-    message: "Reset Your Password:",
-    errors: [],
-    token: token,
+  const verificationResult = await verifyToken({
+    token: req.query.token,
+    tableName: "users",
+    tokenColumnName: "password_reset_token",
+    expirationColumnName: "token_expiration",
+    noTokenMessage: "Invalid request, token can't find.",
+    invalidTokenMessage: "Token is invalid or has expired.",
   });
-} else {
-  res.status(verificationResult.error ? 500 : 400)
-    .render("reset-password", {
+  if (verificationResult.isValid) {
+    res.status(200).render("reset-password", {
+      title: "Reset Password Page",
+      message: "Reset Your Password:",
+      errors: [],
+      token: req.query.token,
+    });
+  } else {
+    res.status(verificationResult.error ? 500 : 400).render("reset-password", {
       title: "Reset Password Page",
       message: verificationResult.message,
       errors: [],
       token: "",
     });
-};
+  }
 };
 
 exports.resetPassword = async function (req, res) {
@@ -35,15 +40,23 @@ exports.resetPassword = async function (req, res) {
       token: token,
     });
   }
-  const verificationResult = await verifyToken(token);
+  const verificationResult = await verifyToken({
+    token: token,
+    tableName: "users",
+    tokenColumnName: "password_reset_token",
+    expirationColumnName: "token_expiration",
+    noTokenMessage: "No password reset token provided.",
+    invalidTokenMessage: "Password reset token is invalid or has expired.",
+  });
   if (!verificationResult.isValid) {
-    return res.status(verificationResult.error ? 500 : 400)
-    .render("reset-password", {
-      title: "Reset Password Page",
-      message: verificationResult.message,
-      errors: [],
-      token: "",
-    });
+    return res
+      .status(verificationResult.error ? 500 : 400)
+      .render("reset-password", {
+        title: "Reset Password Page",
+        message: verificationResult.message,
+        errors: [],
+        token: "",
+      });
   }
   try {
     // Hash new password
